@@ -1,11 +1,17 @@
-CREATE TABLE if not exists user (
-userid INTEGER(4) NOT NULL auto_increment PRIMARY KEY,
-email VARCHAR(256) NOT NULL,
-username VARCHAR(64) NOT NULL UNIQUE,
-password VARCHAR(64) NOT NULL,
-fname VARCHAR(64) NOT NULL,
-lname VARCHAR(64) NOT NULL,
-access INTEGER(1)
+CREATE TABLE IF NOT EXISTS `user` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` char(128) NOT NULL,
+  `fname` varchar(50) NOT NULL,
+  `salt` char(128) NOT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+CREATE TABLE if not exists login_attempts (
+    user_id INTEGER(11) NOT NULL,
+    time VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE if not exists booklist (
@@ -13,6 +19,7 @@ bookid INTEGER(3) NOT NULL PRIMARY KEY,
 bookname VARCHAR(64) NOT NULL,
 bookcoverpic VARCHAR(64) NOT NULL,
 catid INTEGER(3) NOT NULL,
+chkdusr VARCHAR(64),
 available INTEGER(1) NOT NULL
 );
 
@@ -25,13 +32,6 @@ CREATE TABLE if not exists shoppingcart (
 username VARCHAR(64) NOT NULL,
 bookname VARCHAR(64) NOT NULL
 );
-
-INSERT INTO user (email, username, password, fname, lname, access)
-VALUES ("ckenn@gmail.com", "ckenn", "Password11", "Conrad", "Kennington", 0);
-INSERT INTO user (email, username, password, fname, lname, access)
-VALUES ("lro@gmail.com", "lro", "Password11", "Linda", "Otto", 0);
-INSERT INTO user (email, username, password, fname, lname, access)
-VALUES ("jeo@gmail.com", "jeo", "Password11", "John", "Otto", 0);
 
 
 INSERT INTO categories (catid, category) 
@@ -65,3 +65,10 @@ INSERT INTO booklist (bookid, bookname, bookcoverpic, catid, available)
 values (9, "Creative Code", "bookpics/creativecode.jpg", 4, 1);
 INSERT INTO booklist (bookid, bookname, bookcoverpic, catid, available) 
 values (10, "Coding as a Playground", "bookpics/codingplay.jpg", 4, 1);
+
+INSERT INTO `user` (`userid`, `username`, `email`, `password`, `fname`, `salt`) VALUES
+(1, 'test_user', 'test@example.com', '00807432eae173f652f2064bdca1b61b290b52d40e429a7d295d76a71084aa96c0233b82f1feac45529e0726559645acaed6f3ae58a286b9f075916ebf66cacc', 'Test', 'f9aab579fc1b41ed0c44fe4ecdbfcdb4cb99b9023abb241a6db833288f4eea3c02f76e0d35204a8695077dcf81932aa59006423976224be0390395bae152d4ef');
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

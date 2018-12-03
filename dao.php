@@ -1,15 +1,15 @@
-<?php
-	ob_start();
-	$host="localhost"; // Host name 
-	$sqlusername="root"; // Mysql username 
-	$sqlpassword="P@ssw0rd"; // Mysql password 
-	$db_name="cs516projectdb"; // Database name 
-	$tbl_name=""; // Table name
-
-	// Connect to server and select databse.
-	$conn=mysqli_connect($host, $sqlusername, $sqlpassword, $db_name);
-	if ($conn->connect_error) {
-		die("Connection failed with the following error:" . $conn->connect_error);
-	}
-	mysqli_select_db($conn, $db_name) or die(mysql_error());
+﻿<?php
+/**
+ * These are the database login details
+ */  
+define("HOST", "localhost");     // The host you want to connect to.
+define("SQLUSERNAME", "root");    // The database username. 
+define("PASSWORD", "P@ssw0rd");    // The database password. 
+define("DB_NAME", "cs516projectdb");    // The database name.
+ 
+define("CAN_REGISTER", "any");
+define("DEFAULT_ROLE", "member");
+ 
+define("SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!
+	
 ?>	

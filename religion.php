@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
-<?php require_once "header2.php"; ?> 
-<?php require_once "dao.php"; ?> 
-<?php session_start();
-	if(isset($_SESSION['conn'])) {
-		$conn = $_SESSION['conn'];
+<?php 
+require_once "header2.php";
+include_once "dao.php"; 
+include_once 'db_connect.php';
+include_once 'functions.php';
+sec_session_start(); // Our custom secure way of starting a PHP session.
+if(!login_check($mysqli) == true) {
+       header ('location: login2.php');
+} 
+	if(isset($_SESSION['mysqli'])) {
+		$mysqli = $_SESSION['mysqli'];
 	}
 	if(isset($_SESSION['username'])) {
 		$username = $_SESSION['username'];
@@ -12,6 +18,7 @@
 	if(isset($_SESSION['bookid'])) {
 	$bookid = $_SESSION['bookid'];}	
 ?>
+
 
 <head> <link rel="stylesheet" type="text/css" href= "base.css">
 <title>Religion</title>
@@ -39,7 +46,7 @@
 				foreach($_POST['check_list'] as $selected){
 					$ckval = $selected;
 					$sql="SELECT  * FROM booklist where bookid=($ckval)";
-					$result=mysqli_query($conn, $sql);
+					$result=mysqli_query($mysqli, $sql);
 					$row = mysqli_fetch_assoc ($result);
 					$scbook = $row['bookname'];
 					if ($book1 == null  && $selected <> 4 && $row['available']==1){
@@ -47,9 +54,11 @@
 						$available1 = $row['available'];
 						$books = $book1;
 						$sql3="UPDATE booklist SET available=0 where bookid=$ckval";
-						mysqli_query($conn, $sql3);
+						mysqli_query($mysqli, $sql3);
 						$sql4="INSERT INTO shoppingcart (username, bookname) VALUES ('$username', '$scbook')";
-						mysqli_query($conn, $sql4);
+						mysqli_query($mysqli, $sql4);
+						$sql5="UPDATE booklist SET chkdusr='$username' where bookid=$ckval";
+						mysqli_query($mysqli, $sql5);
 					}
 					if ($selected == 4 && $row['available']==1) {
 						$book2 = $row['bookname'];
@@ -59,9 +68,11 @@
 						else {
 							$books = $book1." and ".$book2;}
 						$sql3="UPDATE booklist SET available=0 where bookid=$ckval";
-						mysqli_query($conn, $sql3);
+						mysqli_query($mysqli, $sql3);
 						$sql4="INSERT INTO shoppingcart (username, bookname) VALUES ('$username', '$book2')";
-						mysqli_query($conn, $sql4);
+						mysqli_query($mysqli, $sql4);
+						$sql5="UPDATE booklist SET chkdusr='$username' where bookid=$ckval";
+						mysqli_query($mysqli, $sql5);
 					}
 					if ($available1 == null && $available2 == null) {
 						$notavailable = "My apologies.  Your selection is not available. Please make another selection or feel free to check other categories.";
@@ -87,8 +98,8 @@
 
 	<h1>Religion</h1>
 	<form method="POST" action="<?php echo ($_SERVER["PHP_SELF"]);?>">
-	<div  class="sctextalign" id="formtext">
-		<span class="error"> <?php echo $noselectionerr.$selectiondir.$notavailable;?></span>
+	<div  class="cattextalign" id="formtext">
+		<span class="usrmsgs"> <?php echo $noselectionerr.$selectiondir.$notavailable;?></span>
 	</div>
 	<div class="tablealign">	
 		<table style="width:50%" id="t01">
@@ -99,17 +110,24 @@
 				<th>Select</th>
 				<th>Title</th> 
 				<th>Cover</th>
+				<th>Available?</th>
 			  </tr>
 			  <tr>
-				<td><input type="checkbox" name = "check_list[0]" value = 3></td>
-				<td>The World Without Us</td> 
-				<td class="colpicalign"><img src="bookpics/world-w-out-us.jpg" alt="World Without Us"/></td>
+				<td><input type="checkbox" name = "check_list[0]" id="The World Without Us" value = 3></td>
+				<td><label for="The World Without Us">The World Without Us</td> 
+				<td class="colpicalign"><label for="The World Without Us"><img src="bookpics/world-w-out-us.jpg" alt="World Without Us"/></td>
+				<td><label for="The World Without Us"><?php $av = "Available"; $sql2="SELECT * FROM booklist where bookid=3"; $result2=mysqli_query($mysqli, $sql2); $row2 = mysqli_fetch_assoc ($result2);
+					$scbook2 = $row2['available']; if ($scbook2==1){echo "Available";} else{echo "Not available.";} ?> 
+				</td>
 			  </tr>
 
 			  <tr>
-				<td><input type="checkbox" name = "check_list[1]" value = 4></td>
-			   <td>Make Today Matter</td> 
-				<td class="colpicalign"><img src="bookpics/maketodaymatter.jpg" alt="Make Today Matter"/></td>
+				<td><input type="checkbox" name = "check_list[1]" id="Make Today Matter" value = 4></td>
+			   <td><label for="Make Today Matter">Make Today Matter</td> 
+				<td class="colpicalign"><label for="Make Today Matter"><img src="bookpics/maketodaymatter.jpg" alt="Make Today Matter"/></td>
+				<td><label for="Make Today Matter"><?php $av = "Available"; $sql2="SELECT * FROM booklist where bookid=4"; $result2=mysqli_query($mysqli, $sql2); $row2 = mysqli_fetch_assoc ($result2);
+					$scbook2 = $row2['available']; if ($scbook2==1){echo "Available";} else{echo "Not available.";} ?> 
+				</td>
 			  </tr>
 		</table>
 	</div>

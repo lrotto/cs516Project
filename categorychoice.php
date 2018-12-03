@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
-<?php require_once "header2.php"; ?> 
+<?php require_once "header2.php";  
+include_once 'db_connect.php';
+include_once 'functions.php';
+sec_session_start();
+if(!login_check($mysqli) == true) {
+       header ('location: login2.php');
+} 
+
+
+?>
 <head> <link rel="stylesheet" type="text/css" href= "base.css">
 <title>Categories</title>
 
@@ -19,23 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }  
 }
 
-function testcat($catid) {
-  if ($catid == 1) {
-	header( "Location: scifi.php" );
-  }
-  else if ($catid == 2) {
-	header( "Location: fantasy.php" );
-  }
-  else if ($catid == 3) {
-	header( "Location: non-fiction.php" );
-  }
-  else if ($catid == 4) {
-	header( "Location: ed-cs.php" );
-  }
-  else if ($catid == 5) {
-	header( "Location: religion.php" );
-  }
-}
+
 ?>
 
 	<h1>Choose your genre:</h1>
@@ -45,12 +38,12 @@ function testcat($catid) {
 			<div  class="formcol" id="formtext">
 				<form method="POST" action="<?php echo ($_SERVER["PHP_SELF"]);?>">
 					<span class="highlightme">
-					<input type="radio" name="genre" value=1> Science&nbspFiction &nbsp<br>
-					<input type="radio" name="genre" value=2> Fantasy&nbsp<br>
-					<input type="radio" name="genre" value=3> Non-Fiction&nbsp<br>
-					<input type="radio" name="genre" value=4> Education(CS)&nbsp<br>
-					<input type="radio" name="genre" value=5> Religion&nbsp<br>
-					<span class="error"><?php echo $noselectionerr;?></span>
+					<input type="radio" name="genre" id="Science Fiction" value=1> <label for="Science Fiction">Science Fiction&nbsp<br></label> 
+					<input type="radio" name="genre" id="Fantasy" value=2> <label for="Fantasy">Fantasy&nbsp<br></label>
+					<input type="radio" name="genre" id="Non-Fiction" value=3> <label for="Non-Fiction">Non-Fiction&nbsp<br></label>
+					<input type="radio" name="genre" id="Education(CS)" value=4> <label for="Education(CS)">Education(CS)&nbsp<br></label>
+					<input type="radio" name="genre" id="Religion"value=5> <label for="Religion">Religion&nbsp<br></label><br>
+					<span class="usrmsgs"><?php echo $noselectionerr;?></span>
 					</span>
 					<input type="submit" name="submit" id="button" id="buttonleft" value="Submit"/>
 				</form>

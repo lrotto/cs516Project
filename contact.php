@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
-<?php require_once "header2.php"; ?> 
+<?php require "header2.php";
+include_once 'db_connect.php';
+include_once 'functions.php';
+ 
+sec_session_start();
+?>
+
 <head> <link rel="stylesheet" type="text/css" href= "base.css">
 <title>Contact Linda</title>
 

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-   <?php require_once "header3.php"; ?> 
+	<?php require_once "header3.php";?>
 <head> <link rel="stylesheet" type="text/css" href= "base.css">
 <title>Linda's Book Sharing</title>
 
 <body>
 	<div id="container">
 		<div id="left">  
-			<a href="login.php" class="button" id="buttonleft">LOGIN</a>
+			<a href="login2.php" class="button" id="buttonleft">LOGIN</a>
 		</div>
 		<div id="right">
 			<img src="images/bookcase2.jpg" alt="Otto Bookshelf" id="bookshelfimg">
